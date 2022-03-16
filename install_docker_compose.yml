@@ -17,7 +17,7 @@
               - curl
               - gnupg
               - lsb-release
-            update-cache: yes
+            update-cache: true
             cache_valid_time: 86400
 
         - name: add key
@@ -29,25 +29,24 @@
         - name: установка стабильного репозитория
           apt_repository:
             repo: >
-              deb [arch=amd64  signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] 
-              https://download.docker.com/linux/ubuntu  
+              deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
+              https://download.docker.com/linux/ubuntu
               {{ ansible_distribution_release }} stable
             state: present
-            update-cache: yes
+            update-cache: true
             filename: docker
 
         - name: Install docker-ce
           apt:
             name: docker-ce
-            update-cache: yes
+            update-cache: true
 
         - name: Check install docker
           service:
             name: docker
             state: restarted
-            enabled: yes
-      become: yes
-  
+            enabled: true
+      become: true
 
     - name: Install docker-compose
       block:
@@ -63,17 +62,14 @@
             dest: /usr/local/bin/docker-compose
             mode: 0755
       become: yes
-   
-
     - name: Comlete install
       block:
         - name: добавление пользователя в группу Docker
           user:
             name: "{{ansible_user}}"
             group: docker
-            append: yes
+            append: true
 
         - name: ребут сервера
           reboot:
-      become: yes
-   
+      become: true
